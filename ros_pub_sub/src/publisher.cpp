@@ -15,13 +15,18 @@
 
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/string.hpp"
+#include "custom_interface/srv/product_three_nums.hpp"
 
 using namespace std::chrono_literals;
 
-/**
- * @brief This is the sample publisher class to publish a message
- *
- */
+void product(const std::shared_ptr<custom_interface::srv::ProductThreeNums::Request> request,
+          std::shared_ptr<custom_interface::srv::ProductThreeNums::Response>      response)
+{
+  response->product = request->a * request->b * request->c;;
+  RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "Incoming request\na: %ld" " b: %ld" " c: %ld",
+                request->a, request->b, request->c);
+  RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "sending back response: [%ld]", (long int)response->product);
+}
 class MyPublisher : public rclcpp::Node {
  public:
   /**
@@ -31,8 +36,7 @@ class MyPublisher : public rclcpp::Node {
    */
   MyPublisher() : Node("MyPublisher"), count_(0) {
     publisher_ = this->create_publisher<std_msgs::msg::String>("topic", 10);
-    timer_ = this->create_wall_timer(500ms,
-     std::bind(&MyPublisher::timer_callback, this));
+    timer_ = this->create_wall_timer(500ms, std::bind(&MyPublisher::timer_callback, this));
   }
 
  private:
@@ -49,10 +53,13 @@ class MyPublisher : public rclcpp::Node {
   rclcpp::TimerBase::SharedPtr timer_;
   rclcpp::Publisher<std_msgs::msg::String>::SharedPtr publisher_;
   size_t count_;
+  
 };
 
 int main(int argc, char* argv[]) {
   rclcpp::init(argc, argv);
+  rclcpp::Service<custom_interface::srv::ProductThreeNums>::SharedPtr service =
+    node->create_service<custom_interface::srv::ProductThreeNums>("product_three_nums", &product);
   rclcpp::spin(std::make_shared<MyPublisher>());
   rclcpp::shutdown();
   return 0;
