@@ -1,16 +1,20 @@
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
-  <name>ros_pub_sub</name>
-  <version>0.0.0</version>
-  <description>Ros2 Publisher and Subscriber</description>
-  <maintainer email="vkd@umd.edu">koundinya</maintainer>
+  <name>week10_hw</name>
+  <version>0.0.1</version>
+  <description>Week 10 HW</description>
+  <maintainer email="koundinya.vinnakota@gmail.com">koundinya</maintainer>
   <license>MIT License</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
+  <buildtool_depend>rosidl_default_generators</buildtool_depend>
+  <exec_depend>ros2launch</exec_depend>
+  <exec_depend>rosidl_default_runtime</exec_depend>
+
+  <member_of_group>rosidl_interface_packages</member_of_group>
   <depend>rclcpp</depend>
   <depend>std_msgs</depend>
-  
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
 

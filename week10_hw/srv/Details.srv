@@ -1,0 +1,7 @@
+string first_name
+string last_name
+uint8 age
+---
+string changed_first_name
+string changed_last_name
+uint8 changed_age
