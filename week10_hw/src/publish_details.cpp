@@ -1,45 +1,64 @@
+/**
+ * @file publish_details.cpp
+ * @author Koundinya Vinnakota
+ * @brief This the publisher and servie provider
+ * @version 0.1
+ * @date 2022-11-18
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
 #include <chrono>
 #include <memory>
 
 #include "rclcpp/rclcpp.hpp"
 #include "week10_hw/msg/details.hpp"
 #include "week10_hw/srv/details.hpp"
-// #include "week10_hw"
+
 
 using namespace std::chrono_literals;
-
+/**
+ * @brief This is the publisher class 
+ * 
+ */
 class DetailsPublisher : public rclcpp::Node {
 public:
+/**
+ * @brief Construct a new Details Publisher object
+ * 
+ */
   DetailsPublisher() : Node("details_publisher") {
-    week10_hw::msg::Details temp_;
+    
     this->declare_parameter("Name_of_topic", "publish_details");
     this->declare_parameter("publishing_speed", 500);
-
+// Initial message variables declaration
     message_.first_name = "Koundinya";
     message_.last_name = "Vinnakota";
     message_.age = 22;
-
+//Creation of publisher
     details_publisher_ =
         this->create_publisher<week10_hw::msg::Details>(this->get_parameter("Name_of_topic").as_string(), 10);
-
+// Creation of service 
     service_ = this->create_service<week10_hw::srv::Details>(
         "change_details",
         std::bind(&DetailsPublisher::change_details, this,
                   std::placeholders::_1, std::placeholders::_2));
-
+// Creation of timer
     timer_ = this->create_wall_timer(
         std::chrono::milliseconds(this->get_parameter("publishing_speed").as_int()), std::bind(&DetailsPublisher::timer_callback, this));
-
+// Setting logger level to Debug
     if (rcutils_logging_set_logger_level(
             this->get_name(),
             RCUTILS_LOG_SEVERITY::RCUTILS_LOG_SEVERITY_DEBUG) == RCUTILS_RET_OK)
       RCLCPP_DEBUG(this->get_logger(), "Started with DEBUG");
     else
       RCLCPP_INFO(this->get_logger(), "Started without DEBUG");
-
+//Logging statement for debug
     RCLCPP_DEBUG(this->get_logger(), " Publisher node started ");
+//Logging statement for error level
     if (this->get_parameter("publishing_speed").as_int() < 1000)
       RCLCPP_ERROR(this->get_logger(), "The speed of publish is too high!");
+// logging statement for fatal level
     if (this->get_parameter("publishing_speed").as_int() < 500) {
       RCLCPP_FATAL(this->get_logger(),
                    "The speed of publish is extremely high! Quiting.");
@@ -63,17 +82,25 @@ private :
               message_.age);
   details_publisher_->publish(message_);
 }
-
+/**
+ * @brief Server call back function
+ * 
+ * @param request Request to service
+ * @param response Response from service
+ */
 void change_details(
     const std::shared_ptr<week10_hw::srv::Details::Request> request,
     std::shared_ptr<week10_hw::srv::Details::Response> response) {
+  // Response variables getting assigned
   response->changed_first_name = request->first_name;
   response->changed_last_name = request->last_name;
   response->changed_age = request->age;
+  //logging statement for warning
   RCLCPP_WARN(this->get_logger(), "Details Changed ");
   message_.first_name = request->first_name;
   message_.last_name = request->last_name;
   message_.age = request->age;
+  // logging statements
   RCLCPP_INFO(this->get_logger(),
               " Change Details Request \n First Name: %s "
               "\nLast Name: %s "
@@ -87,7 +114,7 @@ void change_details(
               response->changed_first_name.c_str(),
               response->changed_last_name.c_str(), response->changed_age);
 }
-
+// decalration of private variables
 rclcpp::Publisher<week10_hw::msg::Details>::SharedPtr details_publisher_;
 rclcpp::TimerBase::SharedPtr timer_;
 week10_hw::msg::Details message_; // Custom message to publish
