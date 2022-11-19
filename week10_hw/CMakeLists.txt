@@ -28,19 +28,29 @@ ament_export_dependencies(rosidl_default_runtime)
 
 
 add_executable(publish_details
-  src/publish_details.cpp
+  src/publish_details.cpp 
+)
+add_executable(subscribe_details
+  src/subscriber.cpp 
 )
 ament_target_dependencies(publish_details
   "rclcpp"
 )
+ament_target_dependencies(subscribe_details
+  "rclcpp"
+)
 install(TARGETS publish_details
+ DESTINATION lib/${PROJECT_NAME})
+
+install(TARGETS subscribe_details
  DESTINATION lib/${PROJECT_NAME})
 
 rosidl_get_typesupport_target(cpp_typesupport_target
 ${PROJECT_NAME} "rosidl_typesupport_cpp")
 
 target_link_libraries(publish_details "${cpp_typesupport_target}")
+target_link_libraries(subscribe_details "${cpp_typesupport_target}")
 
-
+install(DIRECTORY launch DESTINATION share/${PROJECT_NAME}/)
 
 ament_package()
