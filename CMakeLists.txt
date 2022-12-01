@@ -10,6 +10,9 @@ find_package(ament_cmake REQUIRED)
 
 find_package(std_msgs REQUIRED)
 find_package(rclcpp REQUIRED)
+find_package(tf2_ros REQUIRED)
+find_package(tf2 REQUIRED)
+find_package(geometry_msgs REQUIRED)
          # CHANGE
 find_package(rosidl_default_generators REQUIRED)
 
@@ -33,8 +36,12 @@ add_executable(publish_details
 add_executable(subscribe_details
   src/subscriber.cpp 
 )
-ament_target_dependencies(publish_details
-  "rclcpp"
+ament_target_dependencies(
+  publish_details
+  rclcpp
+  tf2
+  tf2_ros
+  geometry_msgs
 )
 ament_target_dependencies(subscribe_details
   "rclcpp"

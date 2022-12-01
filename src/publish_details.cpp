@@ -14,6 +14,12 @@
 #include "rclcpp/rclcpp.hpp"
 #include "week10_hw/msg/details.hpp"
 #include "week10_hw/srv/details.hpp"
+#include "geometry_msgs/msg/transform_stamped.hpp"
+#include "rclcpp/rclcpp.hpp"
+#include "tf2/LinearMath/Quaternion.h"
+#include "tf2_ros/transform_broadcaster.h"
+
+
 
 using namespace std::chrono_literals;
 /**
@@ -27,8 +33,14 @@ class DetailsPublisher : public rclcpp::Node {
    *
    */
   DetailsPublisher() : Node("details_publisher") {
+
+    // Declaring and acquiring topic names and publishing speed
     this->declare_parameter("Name_of_topic", "publish_details");
     this->declare_parameter("publishing_speed", 500);
+    //Intialize the transform broadcaster
+    tf_broadcaster_ = std::make_unique<tf2_ros::TransformBroadcaster>(*this);
+
+
     // Initial message variables declaration
     message_.first_name = "Koundinya";
     message_.last_name = "Vinnakota";
@@ -36,11 +48,11 @@ class DetailsPublisher : public rclcpp::Node {
     // Creation of publisher
     details_publisher_ = this->create_publisher<week10_hw::msg::Details>(
         this->get_parameter("Name_of_topic").as_string(), 10);
-    // Creation of service
-    service_ = this->create_service<week10_hw::srv::Details>(
-        "change_details",
-        std::bind(&DetailsPublisher::change_details, this,
-                  std::placeholders::_1, std::placeholders::_2));
+    // // Creation of service
+    // service_ = this->create_service<week10_hw::srv::Details>(
+    //     "change_details",
+    //     std::bind(&DetailsPublisher::change_details, this,
+    //               std::placeholders::_1, std::placeholders::_2));
     // Creation of timer
     timer_ = this->create_wall_timer(
         std::chrono::milliseconds(
@@ -77,6 +89,25 @@ class DetailsPublisher : public rclcpp::Node {
                 "\nAge: %d ",
                 message_.first_name.c_str(), message_.last_name.c_str(),
                 message_.age);
+
+    // Setting the messages for transformation
+    geometry_msgs::msg::TransformStamped t;
+    t.header.stamp = this->get_clock()->now();
+    t.header.frame_id = "talk";
+    t.child_frame_id = "world";
+    t.transform.translation.x = 2.5;
+    t.transform.translation.y = 3.5;
+    t.transform.translation.z = 0.5;
+
+    tf2::Quaternion q;
+    q.setRPY(1.57, 1.57,1.57);
+    t.transform.rotation.x = q.x();
+    t.transform.rotation.y = q.y();
+    t.transform.rotation.z = q.z();
+    t.transform.rotation.w = q.w();
+    // Send the transformation
+    tf_broadcaster_->sendTransform(t);
+    
     details_publisher_->publish(message_);
   }
   /**
@@ -112,6 +143,7 @@ class DetailsPublisher : public rclcpp::Node {
                 response->changed_last_name.c_str(), response->changed_age);
   }
   // decalration of private variables
+  std::unique_ptr<tf2_ros::TransformBroadcaster> tf_broadcaster_;
   rclcpp::Publisher<week10_hw::msg::Details>::SharedPtr details_publisher_;
   rclcpp::TimerBase::SharedPtr timer_;
   week10_hw::msg::Details message_;  // Custom message to publish
