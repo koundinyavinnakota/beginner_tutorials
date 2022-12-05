@@ -42,6 +42,15 @@ For your reference a sample rosbag has been installed in the results folder
 ros2 bag record --all -o package_output
 
 ```
+## Steps to test the package
+
+In a new terminal source humble and your package. Then type the following command while publisher or any launch file is running.
+
+
+```
+colcon test --event-handlers console_direct+ --packages-select week11_hw
+
+```
 ## Steps to use service call
 After building the project ...
 Open new terminal, navigate to ros2 workspace
