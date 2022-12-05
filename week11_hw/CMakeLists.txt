@@ -56,12 +56,16 @@ install(TARGETS publish_details
 install(TARGETS subscribe_details
  DESTINATION lib/${PROJECT_NAME})
 
+set(TESTFILES test/ros_test.cpp)
+ament_add_gtest(${PROJECT_NAME}_test ${TESTFILES})
+ament_target_dependencies(${PROJECT_NAME}_test rclcpp std_msgs geometry_msgs rclcpp tf2_ros tf2)
+
 rosidl_get_typesupport_target(cpp_typesupport_target
 ${PROJECT_NAME} "rosidl_typesupport_cpp")
 
 target_link_libraries(publish_details "${cpp_typesupport_target}")
 target_link_libraries(subscribe_details "${cpp_typesupport_target}")
-
+target_link_libraries(${PROJECT_NAME}_test "${cpp_typesupport_target}")
 install(DIRECTORY launch DESTINATION share/${PROJECT_NAME}/)
 
 ament_package()

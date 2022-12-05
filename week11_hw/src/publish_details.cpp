@@ -49,11 +49,11 @@ class DetailsPublisher : public rclcpp::Node {
     // Creation of publisher
     details_publisher_ = this->create_publisher<week11_hw::msg::Details>(
         this->get_parameter("Name_of_topic").as_string(), 10);
-    // // Creation of service
-    // service_ = this->create_service<week11_hw::srv::Details>(
-    //     "change_details",
-    //     std::bind(&DetailsPublisher::change_details, this,
-    //               std::placeholders::_1, std::placeholders::_2));
+    // Creation of service
+    service_ = this->create_service<week11_hw::srv::Details>(
+        "change_details",
+        std::bind(&DetailsPublisher::change_details, this,
+                  std::placeholders::_1, std::placeholders::_2));
     // Creation of timer
     timer_ = this->create_wall_timer(
         std::chrono::milliseconds(
