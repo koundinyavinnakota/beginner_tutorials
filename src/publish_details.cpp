@@ -12,8 +12,8 @@
 #include <memory>
 
 #include "rclcpp/rclcpp.hpp"
-#include "week10_hw/msg/details.hpp"
-#include "week10_hw/srv/details.hpp"
+#include "beginner_tutorials/msg/details.hpp"
+#include "beginner_tutorials/srv/details.hpp"
 #include "geometry_msgs/msg/transform_stamped.hpp"
 #include "rclcpp/rclcpp.hpp"
 #include "tf2/LinearMath/Quaternion.h"
@@ -47,10 +47,10 @@ class DetailsPublisher : public rclcpp::Node {
     message_.last_name = "Vinnakota";
     message_.age = 22;
     // Creation of publisher
-    details_publisher_ = this->create_publisher<week10_hw::msg::Details>(
+    details_publisher_ = this->create_publisher<beginner_tutorials::msg::Details>(
         this->get_parameter("Name_of_topic").as_string(), 10);
     // // Creation of service
-    // service_ = this->create_service<week10_hw::srv::Details>(
+    // service_ = this->create_service<beginner_tutorials::srv::Details>(
     //     "change_details",
     //     std::bind(&DetailsPublisher::change_details, this,
     //               std::placeholders::_1, std::placeholders::_2));
@@ -118,8 +118,8 @@ class DetailsPublisher : public rclcpp::Node {
    * @param response Response from service
    */
   void change_details(
-      const std::shared_ptr<week10_hw::srv::Details::Request> request,
-      std::shared_ptr<week10_hw::srv::Details::Response> response) {
+      const std::shared_ptr<beginner_tutorials::srv::Details::Request> request,
+      std::shared_ptr<beginner_tutorials::srv::Details::Response> response) {
     // Response variables getting assigned
     response->changed_first_name = request->first_name;
     response->changed_last_name = request->last_name;
@@ -146,10 +146,10 @@ class DetailsPublisher : public rclcpp::Node {
   // decalration of private variables
   std::unique_ptr<tf2_ros::TransformBroadcaster> tf_broadcaster_;
   std::string frame_;
-  rclcpp::Publisher<week10_hw::msg::Details>::SharedPtr details_publisher_;
+  rclcpp::Publisher<beginner_tutorials::msg::Details>::SharedPtr details_publisher_;
   rclcpp::TimerBase::SharedPtr timer_;
-  week10_hw::msg::Details message_;  // Custom message to publish
-  rclcpp::Service<week10_hw::srv::Details>::SharedPtr
+  beginner_tutorials::msg::Details message_;  // Custom message to publish
+  rclcpp::Service<beginner_tutorials::srv::Details>::SharedPtr
       service_;  // service pointer
 };
 

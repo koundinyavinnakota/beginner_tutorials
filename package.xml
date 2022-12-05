@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
-  <name>week10_hw</name>
+  <name>beginner_tutorials</name>
   <version>0.0.1</version>
-  <description>Week 10 HW</description>
+  <description>beginner_tutorials</description>
   <maintainer email="koundinya.vinnakota@gmail.com">koundinya</maintainer>
   <license>MIT License</license>
 
