@@ -12,7 +12,7 @@
 #include <memory>
 
 #include "rclcpp/rclcpp.hpp"
-#include "beginner_tutorials/msg/details.hpp"
+#include "week11_hw/msg/details.hpp"
 #include "geometry_msgs/msg/transform_stamped.hpp"
 #include "geometry_msgs/msg/twist.hpp"
 #include "tf2/exceptions.h"
@@ -32,7 +32,7 @@ class MySubscriber : public rclcpp::Node {
    *
    */
   MySubscriber() : Node("MySubscriber") {
-    subscription_ = this->create_subscription<beginner_tutorials::msg::Details>(
+    subscription_ = this->create_subscription<week11_hw::msg::Details>(
         "publish_details", 10,
         std::bind(&MySubscriber::topic_callback, this, _1));
 
@@ -48,7 +48,7 @@ class MySubscriber : public rclcpp::Node {
    *
    * @param msg
    */
-  void topic_callback(const beginner_tutorials::msg::Details& msg) const {
+  void topic_callback(const week11_hw::msg::Details& msg) const {
     geometry_msgs::msg::TransformStamped t;
     std::string fromFrameRel = target_frame_.c_str();
     std::string toFrameRel = "listener";
@@ -66,7 +66,7 @@ class MySubscriber : public rclcpp::Node {
     // }
   }
   // subscriber pointer
-  rclcpp::Subscription<beginner_tutorials::msg::Details>::SharedPtr subscription_;
+  rclcpp::Subscription<week11_hw::msg::Details>::SharedPtr subscription_;
   std::shared_ptr<tf2_ros::TransformListener> tf_listener_{nullptr};
   std::unique_ptr<tf2_ros::Buffer>tf_buffer_;
   std::string target_frame_;

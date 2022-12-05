@@ -13,7 +13,7 @@ def generate_launch_description():
         name_topic,
         publish_interval,
         Node(
-            package='week10_hw',
+            package='week11_hw',
             executable='publish_details',
             name = "braodcaster1",
             parameters=[
@@ -27,7 +27,7 @@ def generate_launch_description():
         #     description='Target frame name.'
         # ),
         # Node(
-        #     package='week10_hw',
+        #     package='week11_hw',
         #     executable='publish_details',
         #     name = 'broadcaster2',
         #     parameters=[
@@ -37,7 +37,7 @@ def generate_launch_description():
         #     ]
         # ),
         # Node(
-        #     package='week10_hw',
+        #     package='week11_hw',
         #     executable='subscribe_details',
         #     parameters=[
         #         {'target_frame': LaunchConfiguration('target_frame')}
