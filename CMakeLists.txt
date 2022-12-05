@@ -43,8 +43,12 @@ ament_target_dependencies(
   tf2_ros
   geometry_msgs
 )
-ament_target_dependencies(subscribe_details
-  "rclcpp"
+ament_target_dependencies(
+  subscribe_details
+  rclcpp
+  tf2
+  tf2_ros
+  geometry_msgs
 )
 install(TARGETS publish_details
  DESTINATION lib/${PROJECT_NAME})
