@@ -40,7 +40,8 @@ class DetailsPublisher : public rclcpp::Node {
     //Intialize the transform broadcaster
     tf_broadcaster_ = std::make_unique<tf2_ros::TransformBroadcaster>(*this);
 
-
+    //Assigning the frame name
+    frame_ = this->declare_parameter<std::string>("frame_name","talk");
     // Initial message variables declaration
     message_.first_name = "Koundinya";
     message_.last_name = "Vinnakota";
@@ -93,8 +94,8 @@ class DetailsPublisher : public rclcpp::Node {
     // Setting the messages for transformation
     geometry_msgs::msg::TransformStamped t;
     t.header.stamp = this->get_clock()->now();
-    t.header.frame_id = "talk";
-    t.child_frame_id = "world";
+    t.header.frame_id = "world";
+    t.child_frame_id = frame_.c_str();
     t.transform.translation.x = 2.5;
     t.transform.translation.y = 3.5;
     t.transform.translation.z = 0.5;
@@ -144,6 +145,7 @@ class DetailsPublisher : public rclcpp::Node {
   }
   // decalration of private variables
   std::unique_ptr<tf2_ros::TransformBroadcaster> tf_broadcaster_;
+  std::string frame_;
   rclcpp::Publisher<week10_hw::msg::Details>::SharedPtr details_publisher_;
   rclcpp::TimerBase::SharedPtr timer_;
   week10_hw::msg::Details message_;  // Custom message to publish
