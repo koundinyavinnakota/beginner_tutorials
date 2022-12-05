@@ -1,5 +1,5 @@
 # beginner_tutorials
-## Week10_HW
+## beginner_tutorials
 ---
 
 ## Dependencies
@@ -8,28 +8,28 @@
 - Ros 2 Humble
 
 
-## Steps to run the week10_hw publisher and subscriber
+## Steps to run the beginner_tutorials publisher and subscriber
 ```
 Navigate to the ros2 workspace
 cd ros2_ws/src
 git clone https://github.com/koundinyavinnakota/beginner_tutorials.git
 cd ..
-colcon build --packages-select week10_hw
+colcon build --packages-select beginner_tutorials
 . install/setup.bash
-ros2 run week10_hw publish_details
+ros2 run beginner_tutorials publish_details
 
 Open new terminal, navigate to ros2 workspace
 . install/setup.bash
-ros2 run week10_hw subscribe_details
+ros2 run beginner_tutorials subscribe_details
 ```
 
-## Steps to run the week10_hw from launch file
+## Steps to run the beginner_tutorials from launch file
 ```
 Navigate to the ros2 workspace
 cd ros2_ws/src
 git clone https://github.com/koundinyavinnakota/beginner_tutorials.git
 cd ..
-colcon build --packages-select week10_hw launch.py
+colcon build --packages-select beginner_tutorials launch.py
 . install/setup.bash
 
 ```
@@ -47,14 +47,14 @@ After building the project ...
 Open new terminal, navigate to ros2 workspace
 ```
 . install/setup.bash
-ros2 service call /change_details week10_hw/srv/Details "{first_name: 'Elon',last_name: 'Musk',age: 69}"
+ros2 service call /change_details beginner_tutorials/srv/Details "{first_name: 'Elon',last_name: 'Musk',age: 69}"
 ```
 
 ## Steps to pass parameters from command line
 After building the project ...
 ```
 . install/setup.bash
-ros2 launch week10_hw launch.py publish_interval:=750
+ros2 launch beginner_tutorials launch.py publish_interval:=750
 ```
 
 ## RQT Console Screenshot 
