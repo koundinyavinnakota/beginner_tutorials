@@ -33,6 +33,15 @@ colcon build --packages-select week10_hw launch.py
 . install/setup.bash
 
 ```
+## Steps to run the ros bag command
+
+In a new terminal source humble and your package. Then type the following command while publisher or any launch file is running.
+
+For your reference a sample rosbag has been installed in the results folder
+```
+ros2 bag record --all -o package_output
+
+```
 ## Steps to use service call
 After building the project ...
 Open new terminal, navigate to ros2 workspace
