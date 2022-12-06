@@ -67,7 +67,7 @@ ros2 launch week11_hw launch.py publish_interval:=750
 ```
 
 ## RQT Console Screenshot 
-![RQT console](images/rqt_console_ss.png)
+![RQT console](week11_hw/images/rqt_console_ss.png)
 
 ## Key Points to remember
 ```
