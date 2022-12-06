@@ -1,6 +1,6 @@
 /**
  * @file ros_test.cpp
- * @author Koundinya Vinnakota 
+ * @author Koundinya Vinnakota
  * @brief Testing the publisher and subscriber.
  * @version 0.1
  * @date 2022-11-16
@@ -13,9 +13,10 @@
 #include <stdlib.h>
 
 #include <memory>
+#include <rclcpp/rclcpp.hpp>
+
 #include "week11_hw/msg/details.hpp"
 #include "week11_hw/srv/details.hpp"
-#include <rclcpp/rclcpp.hpp>
 
 namespace integration_test {
 
@@ -38,8 +39,7 @@ class TestingFixture : public testing::Test {
    *
    */
   void SetUp() override {
-    client_ = node_->create_client<week11_hw::srv::Details>(
-        "change_details");
+    client_ = node_->create_client<week11_hw::srv::Details>("change_details");
     RCLCPP_INFO_STREAM(node_->get_logger(), "Setup Complete");
   }
 
@@ -50,7 +50,8 @@ class TestingFixture : public testing::Test {
    */
   bool send_service_call() {
     auto request = std::make_shared<week11_hw::srv::Details::Request>();
-    request->first_name = "Koundinya";  // The request that will be sent via the service.
+    request->first_name =
+        "Koundinya";  // The request that will be sent via the service.
     request->last_name = "Vinnakota";
     request->age = 22;
     // Wait for services to load.
@@ -70,20 +71,19 @@ class TestingFixture : public testing::Test {
     // Waiting for the service to be completed.
     if (rclcpp::spin_until_future_complete(node_, result) ==
         rclcpp::FutureReturnCode::SUCCESS) {
-      auto response = result.get();     
-      
+      auto response = result.get();
+
       std::cout << "This happened" << std::endl;
       RCLCPP_INFO(node_->get_logger(),
-                " Changed Details Request \n First Name: %s "
-                "\nLast Name: %s "
-                "\nAge: %d ",
-                response->changed_first_name.c_str(),
-                response->changed_last_name.c_str(), response->changed_age);
+                  " Changed Details Request \n First Name: %s "
+                  "\nLast Name: %s "
+                  "\nAge: %d ",
+                  response->changed_first_name.c_str(),
+                  response->changed_last_name.c_str(), response->changed_age);
 
-        if(response->changed_first_name.c_str()== request->first_name ){
-            return true;
-        }
-
+      if (response->changed_first_name.c_str() == request->first_name) {
+        return true;
+      }
 
       return false;
     }
@@ -104,10 +104,9 @@ class TestingFixture : public testing::Test {
  protected:
   rclcpp::Node::SharedPtr node_;  //!< The pointer to the rclcpp node.
   rclcpp::Service<week11_hw::srv::Details>::SharedPtr
-      service_;  // service pointer
+      service_;                      // service pointer
   week11_hw::msg::Details message_;  // Custom message to publish
-  rclcpp::Client<week11_hw::srv::Details>::SharedPtr
-      client_;
+  rclcpp::Client<week11_hw::srv::Details>::SharedPtr client_;
 };
 
 /**

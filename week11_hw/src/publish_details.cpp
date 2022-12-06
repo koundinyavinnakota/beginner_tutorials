@@ -11,15 +11,12 @@
 #include <chrono>
 #include <memory>
 
-#include "rclcpp/rclcpp.hpp"
-#include "week11_hw/msg/details.hpp"
-#include "week11_hw/srv/details.hpp"
 #include "geometry_msgs/msg/transform_stamped.hpp"
 #include "rclcpp/rclcpp.hpp"
 #include "tf2/LinearMath/Quaternion.h"
 #include "tf2_ros/transform_broadcaster.h"
-
-
+#include "week11_hw/msg/details.hpp"
+#include "week11_hw/srv/details.hpp"
 
 using namespace std::chrono_literals;
 /**
@@ -33,15 +30,14 @@ class DetailsPublisher : public rclcpp::Node {
    *
    */
   DetailsPublisher() : Node("details_publisher") {
-
     // Declaring and acquiring topic names and publishing speed
     this->declare_parameter("Name_of_topic", "publish_details");
     this->declare_parameter("publishing_speed", 500);
-    //Intialize the transform broadcaster
+    // Intialize the transform broadcaster
     tf_broadcaster_ = std::make_unique<tf2_ros::TransformBroadcaster>(*this);
 
-    //Assigning the frame name
-    frame_ = this->declare_parameter<std::string>("frame_name","talk");
+    // Assigning the frame name
+    frame_ = this->declare_parameter<std::string>("frame_name", "talk");
     // Initial message variables declaration
     message_.first_name = "Koundinya";
     message_.last_name = "Vinnakota";
@@ -101,14 +97,14 @@ class DetailsPublisher : public rclcpp::Node {
     t.transform.translation.z = 0.5;
 
     tf2::Quaternion q;
-    q.setRPY(1.57, 1.57,1.57);
+    q.setRPY(1.57, 1.57, 1.57);
     t.transform.rotation.x = q.x();
     t.transform.rotation.y = q.y();
     t.transform.rotation.z = q.z();
     t.transform.rotation.w = q.w();
     // Send the transformation
     tf_broadcaster_->sendTransform(t);
-    
+
     details_publisher_->publish(message_);
   }
   /**
